@@ -1,0 +1,81 @@
+
+
+curl -H "Content-Type: application/json" -X POST -d '
+{"username":"xyz","password":"xyz"}
+' http://localhost:9092/widgets
+
+
+curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{ "id": 666, "name" : "xxx" }' http://localhost:9092/widgets
+
+
+
+        // Simulate the creation of a widget. This call is handled in-line and not through the per-request handler.
+        entity(as[Widget]) { widget =>
+          respondWithMediaType(`application/json`) {
+            // Push the handling to another context so that we don't block
+
+            def rawJson = extract { _.request.entity.asString} 
+
+            println( rawJson )
+
+            createWidget(widget)
+
+            //def rawJson = extract { _.request.entity.asString} 
+
+            //val json = widget
+            //val futureScala = twitter2ScalaFuture.apply( FinagleClient.documentSearch( index, indexType, json ) )
+      
+            //futureScala.map( f => 
+            //  Ok( Json.parse( f.getContent.toString(CharsetUtil.UTF_8) ) )
+            //)
+
+
+
+          }
+        }
+
+
+
+        {
+
+          "size": 10,
+          "query": {
+            "match": {
+              "_all": {
+                "query": $('#term').val(),
+                "operator": "and"
+              }
+            }
+          },
+          "sort" : [
+            {"colonia" : {"order" : "asc", "mode" : "avg"}}
+          ]
+        };
+
+
+
+ 	val json =
+      		("name"        -> item.name.toString )~
+      		("slug"        -> item.slug.toString )~
+      		("description" -> item.description.toString )~
+      		("username"    -> user.username.toString )
+
+
+    val json = """ {
+      "size": 10,
+      "query": {
+        "match": {
+          "_all": {
+            "query": """ + term + """,
+            "operator": "and"
+          }
+        }
+      },
+      "sort" : [
+        {"colonia" : {"order" : "asc", "mode" : "avg"}}
+      ]
+    }"""
+
+
+
+    curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{ "id": 666, "name" : "villa" }' http://localhost:9092/widgets
