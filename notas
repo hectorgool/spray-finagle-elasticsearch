@@ -5,7 +5,7 @@ curl -H "Content-Type: application/json" -X POST -d '
 ' http://localhost:9092/widgets
 
 
-curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{ "id": 666, "name" : "xxx" }' http://localhost:9092/widgets
+curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{ "id": 666, "name" : "villa" }' http://localhost:9092/widgets
 
 
 
@@ -79,3 +79,33 @@ curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -
 
 
     curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{ "id": 666, "name" : "villa" }' http://localhost:9092/widgets
+
+
+            respondWithHeaders( 
+              RawHeader("Access-Control-Allow-Origin","*"), 
+              RawHeader("Host", "http://localhost"),
+              RawHeader("Origin", "http://localhost"),
+              RawHeader("Allow", "*"),
+              RawHeader("Access-Control-Request-Method", "PUT, GET, POST, DELETE, OPTIONS"),
+              RawHeader("Access-Control-Allow-Headers", "origin, content-type, accept")
+            ) {
+    
+
+
+[info]   | +-com.typesafe:config:1.2.1
+[info]   | +-io.dropwizard.metrics:metrics-core:3.1.1
+[info]   | | +-org.slf4j:slf4j-api:1.7.12
+[info]   | | +-org.slf4j:slf4j-api:1.7.7 (evicted by: 1.7.12)
+[info]   | | 
+[info]   | +-io.dropwizard.metrics:metrics-jvm:3.1.1
+[info]   | | +-io.dropwizard.metrics:metrics-core:3.1.1
+[info]   | | | +-org.slf4j:slf4j-api:1.7.12
+[info]   | | | +-org.slf4j:slf4j-api:1.7.7 (evicted by: 1.7.12)
+[info]   | | | 
+[info]   | | +-org.slf4j:slf4j-api:1.7.12
+[info]   | | +-org.slf4j:slf4j-api:1.7.7 (evicted by: 1.7.12)
+
+
+
+what-depends-on io.dropwizard.metrics metrics-core 3.1.1
+

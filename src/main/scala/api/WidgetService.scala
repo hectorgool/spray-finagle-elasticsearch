@@ -14,6 +14,7 @@ import net.liftweb.json._
 import org.jboss.netty.util.CharsetUtil
 import scala.util.Success
 import scala.util.Failure
+import spray.http.HttpHeaders.RawHeader
 
 
 class WidgetService(implicit val system: ActorSystem,
@@ -35,6 +36,8 @@ class WidgetService(implicit val system: ActorSystem,
 
 
   val route = {
+
+
     pathPrefix("widgets") {
       get {
         // GET /widgets
@@ -57,17 +60,21 @@ class WidgetService(implicit val system: ActorSystem,
         // Simulate the creation of a widget. This call is handled in-line and not through the per-request handler.
         entity(as[Widget]) { widget =>
           respondWithMediaType(`application/json`) {
-            // Push the handling to another context so that we don't block          
-            val json = FinagleClient.stringToJson( widget.name )
-            val futureScala = twitter2ScalaFuture.apply( FinagleClient.documentSearch( index, indexType, json ) )
 
-            onComplete( futureScala ) {
-              case Success(f) => 
-                //complete(s"The result was $value")
-                complete( parse( f.getContent.toString(CharsetUtil.UTF_8) ) )
-              case Failure(ex) => 
-                complete(s"An error occurred: ${ex.getMessage}")
-            } 
+            respondWithHeaders(corsHeaders) { 
+              // Push the handling to another context so that we don't block 
+              val json = FinagleClient.stringToJson( widget.name )
+              val futureScala = twitter2ScalaFuture.apply( FinagleClient.documentSearch( index, indexType, json ) )
+
+              onComplete( futureScala ) {
+                case Success(f) => 
+                  //complete(s"The result was $value")
+                  complete( parse( f.getContent.toString(CharsetUtil.UTF_8) ) )
+                case Failure(ex) => 
+                  complete(s"An error occurred: ${ex.getMessage}")
+              }
+
+            }
 
           }
         }
@@ -92,6 +99,18 @@ class WidgetService(implicit val system: ActorSystem,
       }
 
     }
-  }
-}
 
+  }
+
+
+  val corsHeaders = List(
+    RawHeader("Access-Control-Allow-Origin","*"), 
+    RawHeader("Host", "http://localhost"),
+    RawHeader("Origin", "http://localhost"),
+    RawHeader("Allow", "*"),
+    RawHeader("Access-Control-Request-Method", "PUT, GET, POST, DELETE, OPTIONS"),
+    RawHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Accept-Encoding, Accept-Language, Host, Referer, User-Agent")
+  )
+
+
+}

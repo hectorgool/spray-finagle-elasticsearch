@@ -17,21 +17,21 @@ class WidgetServiceSpec extends Specs2RouteTest with RoutingHandler with Specifi
   import service.marshaller
 
   "The widget routing infrastructure should support" should {
-
+    /*
     "a call to create a widget at /widgets" in {
       Post("/widgets", Widget(None, "foo")).withHeaders(Accept(MediaTypes.`application/json`), `Content-Type`(ContentTypes.`application/json`)) ~> sealRoute(service.route) ~> check {
         contentType === ContentTypes.`application/json`
         status === Created
       }
     }
-
+    */ 
     "a call to fetch all widgets at /widgets" in {
       Get("/widgets") ~> service.route ~> check {
         mediaType === MediaTypes.`application/json`
         status === OK
       }
     }
-
+    /*
     "a call to fetch a widget at /widgets/{id}" in {
       Get("/widgets/101") ~> sealRoute(service.route) ~> check {
         mediaType === MediaTypes.`application/json`
@@ -69,6 +69,8 @@ class WidgetServiceSpec extends Specs2RouteTest with RoutingHandler with Specifi
         status === NotFound
       }
     }
+    */
+
   }
 
 }
